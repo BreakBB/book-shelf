@@ -1,5 +1,7 @@
 # Book Shelf
 
+A simple Spring playground project.
+
 ## Setup
 
 ### Database initialization
@@ -24,6 +26,8 @@ SELECT setval('hibernate_sequence', (SELECT max(id) FROM public.books));
 
 ## Running
 
-1. Maven install: `mvn install`
-2. Docker build: `docker build ./ -t spring-book-shelf`
-3. Start container: `docker-compose up`
+1. Enter the correct database connection information in the application.properties
+   - Replace: `<PORT>`, `<DATABASE_NAME>`, `<USERNAME>` and `<PASSWORD>`
+2. Maven install: `mvn install`
+3. Docker build: `docker build ./ -t spring-book-shelf`
+4. Start container: `docker-compose up`
