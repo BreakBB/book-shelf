@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface BookRepository extends CrudRepository<Book, Long> {
+
     Book findBookByIsbn(String isbn);
 
     @Transactional

@@ -2,12 +2,11 @@ package de.codecentric.bb.book;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThrows;
-import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import de.codecentric.bb.cover.CoverService;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
@@ -22,6 +21,9 @@ class BookServiceTest {
 
     @Mock
     BookRepository repository;
+
+    @Mock
+    CoverService coverService;
 
     @InjectMocks
     BookService bookService;

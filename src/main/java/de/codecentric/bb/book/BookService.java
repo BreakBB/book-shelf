@@ -1,5 +1,6 @@
 package de.codecentric.bb.book;
 
+import de.codecentric.bb.cover.CoverService;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +11,12 @@ import org.springframework.stereotype.Service;
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final CoverService coverService;
 
     @Autowired
-    public BookService(BookRepository bookRepository) {
+    public BookService(BookRepository bookRepository, CoverService coverService) {
         this.bookRepository = bookRepository;
+        this.coverService = coverService;
     }
 
     public List<Book> findAllBooks() {
@@ -31,6 +34,10 @@ public class BookService {
 
     public Book addBook(Book newBook) {
         return bookRepository.save(newBook);
+    }
+
+    public byte[] getCover(String isbn) {
+        return coverService.getCoverByIsbn(isbn);
     }
 
     public long deleteByIsbn(String isbn) {
