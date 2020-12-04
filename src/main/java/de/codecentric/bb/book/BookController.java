@@ -27,7 +27,9 @@ public class BookController extends BookExceptionController {
     @GetMapping
     public List<Book> getAllBooks() {
         log.info("Finding all books");
-        return bookService.findAllBooks();
+        List<Book> books = bookService.findAllBooks();
+        log.info("Found {} books", books.size());
+        return books;
     }
 
     @GetMapping("/{isbn}")
