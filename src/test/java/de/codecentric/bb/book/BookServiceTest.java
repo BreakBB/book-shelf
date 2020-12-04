@@ -6,6 +6,7 @@ import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import de.codecentric.bb.cover.Cover;
 import de.codecentric.bb.cover.CoverService;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -64,6 +65,8 @@ class BookServiceTest {
 
     @Test
     void addBook() {
+        Cover testCover = new Cover(10L, ISBN, null);
+        when(coverService.getCoverByIsbn(ISBN)).thenReturn(testCover);
         when(repository.save(testBook)).thenReturn(testBook);
 
         Book bookResult = bookService.addBook(testBook);
