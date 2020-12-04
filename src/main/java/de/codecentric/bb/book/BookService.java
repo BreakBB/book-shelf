@@ -1,5 +1,6 @@
 package de.codecentric.bb.book;
 
+import de.codecentric.bb.cover.Cover;
 import de.codecentric.bb.cover.CoverService;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -33,10 +34,13 @@ public class BookService {
     }
 
     public Book addBook(Book newBook) {
+        Cover cover = coverService.getCoverByIsbn(newBook.getIsbn());
+        newBook.setCoverId(cover.getId());
+
         return bookRepository.save(newBook);
     }
 
-    public byte[] getCover(String isbn) {
+    public Cover getCover(String isbn) {
         return coverService.getCoverByIsbn(isbn);
     }
 

@@ -30,7 +30,7 @@ class BookServiceTest {
 
     private final String ISBN = "isbn";
 
-    Book testBook = new Book(10L, ISBN, "title", "author", LocalDateTime.now());
+    Book testBook = new Book(10L, ISBN, "title", "author", LocalDateTime.now(), null);
 
     @Test
     void getAllBooks() {
