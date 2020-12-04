@@ -1,5 +1,7 @@
 package de.codecentric.bb.book;
 
+import de.codecentric.bb.cover.CoverNotFoundException;
+import de.codecentric.bb.cover.CoverTooSmallException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,6 +16,20 @@ public abstract class BookExceptionController {
     @ResponseBody
     public String handleBookNotFoundException(Exception ex) {
         log.info(ex.getMessage());
+        return ex.getMessage();
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ExceptionHandler(CoverNotFoundException.class)
+    @ResponseBody
+    public String handleCoverNotFoundException(Exception ex) {
+        return ex.getMessage();
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ExceptionHandler(CoverTooSmallException.class)
+    @ResponseBody
+    public String handleCoverTooSmallException(Exception ex) {
         return ex.getMessage();
     }
 }
