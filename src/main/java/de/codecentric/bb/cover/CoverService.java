@@ -28,8 +28,8 @@ public class CoverService {
         }
 
         if (!cover.hasValidData()) {
-            log.info("Could not find valid cover for '{}'. Found cover has only {} bytes", isbn, cover.getImageSize());
-            throw new CoverTooSmallException(isbn);
+            log.info("Could not find valid cover for '{}'. Found cover with {} bytes is too small", isbn, cover.getImageSize());
+            return null;
         }
 
         log.info("Saving new cover for isbn '{}' with image size of {} bytes", isbn, cover.getImageSize());

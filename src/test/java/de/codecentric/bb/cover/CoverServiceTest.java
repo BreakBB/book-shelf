@@ -2,6 +2,7 @@ package de.codecentric.bb.cover;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
@@ -48,10 +49,12 @@ class CoverServiceTest {
     }
 
     @Test
-    void shouldThrowForIsbnWithoutCover() {
+    void shouldReturnNullForIsbnWithoutCover() {
         Cover testCover = new Cover(10L, INVALID_ISBN, INVALID_IMAGE);
         when(repository.findCoverByIsbn(INVALID_ISBN)).thenReturn(testCover);
 
-        assertThrows(CoverTooSmallException.class, () -> coverService.getCoverByIsbn(INVALID_ISBN));
+        Cover cover = coverService.getCoverByIsbn(INVALID_ISBN);
+
+        assertThat(cover, is(nullValue()));
     }
 }
