@@ -40,10 +40,6 @@ public class BookService {
         return bookRepository.save(newBook);
     }
 
-    public Cover getCover(String isbn) {
-        return coverService.getCoverByIsbn(isbn);
-    }
-
     public long deleteByIsbn(String isbn) {
         long deletedBookAmount = bookRepository.deleteByIsbn(isbn);
         log.info("Deleted {} books with isbn '{}'", deletedBookAmount, isbn);

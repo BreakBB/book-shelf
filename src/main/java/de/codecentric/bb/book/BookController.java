@@ -1,5 +1,6 @@
 package de.codecentric.bb.book;
 
+import de.codecentric.bb.cover.CoverService;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class BookController extends BookExceptionController {
 
     private final BookService bookService;
+    private final CoverService coverService;
 
     @Autowired
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, CoverService coverService) {
         this.bookService = bookService;
+        this.coverService = coverService;
     }
 
     @GetMapping
@@ -41,7 +44,7 @@ public class BookController extends BookExceptionController {
     @GetMapping(value = "/{isbn}/cover", produces = MediaType.IMAGE_PNG_VALUE)
     public byte[] getCoverByIsbn(@PathVariable String isbn) {
         log.info("Finding cover for book with isbn: {}", isbn);
-        return bookService.getCover(isbn).getImage();
+        return coverService.getCoverByIsbn(isbn).getImage();
     }
 
     @PostMapping
