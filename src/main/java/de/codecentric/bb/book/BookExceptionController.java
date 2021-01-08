@@ -13,7 +13,7 @@ public abstract class BookExceptionController {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(BookNotFoundException.class)
     @ResponseBody
-    public String handleBookNotFoundException(Exception ex) {
+    public String handleBookNotFoundException(BookNotFoundException ex) {
         log.info(ex.getMessage());
         return ex.getMessage();
     }
@@ -21,7 +21,7 @@ public abstract class BookExceptionController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ExceptionHandler(CoverNotFoundException.class)
     @ResponseBody
-    public String handleCoverNotFoundException(Exception ex) {
+    public String handleCoverNotFoundException(CoverNotFoundException ex) {
         return ex.getMessage();
     }
 }
