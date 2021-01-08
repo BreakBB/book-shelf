@@ -1,7 +1,9 @@
 package de.codecentric.bb.cover;
 
+import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,8 +22,13 @@ public class CoverController {
     }
 
     @GetMapping(value = "/{isbn}", produces = MediaType.IMAGE_PNG_VALUE)
-    public byte[] getCoverByIsbn(@PathVariable String isbn) {
+    public byte[] getCoverByIsbn(@PathVariable String isbn, HttpServletResponse response) {
         log.info("Finding cover for isbn: {}", isbn);
-        return coverService.getCoverByIsbn(isbn).getImage();
+        Cover cover = coverService.getCoverByIsbn(isbn);
+        if (cover != null) {
+            return cover.getImage();
+        }
+        response.setStatus(HttpStatus.NOT_FOUND.value());
+        return null;
     }
 }

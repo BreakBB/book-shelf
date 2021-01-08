@@ -35,7 +35,9 @@ public class BookService {
 
     public Book addBook(Book newBook) {
         Cover cover = coverService.getCoverByIsbn(newBook.getIsbn());
-        newBook.setCoverId(cover.getId());
+        if (cover != null) {
+            newBook.setCoverId(cover.getId());
+        }
 
         return bookRepository.save(newBook);
     }
