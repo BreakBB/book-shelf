@@ -24,7 +24,7 @@ public class CoverService {
         Cover cover = repository.findCoverByIsbn(isbn);
 
         if (cover == null) {
-            cover = searchCoverInOpenLibrary(isbn);
+            cover = fetchCoverFromOpenLibrary(isbn);
         }
 
         if (!cover.hasValidData()) {
@@ -36,8 +36,8 @@ public class CoverService {
         return repository.save(cover);
     }
 
-    private Cover searchCoverInOpenLibrary(String isbn) {
-        Cover cover = new Cover();
+    private Cover fetchCoverFromOpenLibrary(String isbn) {
+        Cover cover = new Cover(isbn);
         String coverUrl = String.format(OPEN_LIBRARY_COVER_URL_TEMPLATE, isbn);
 
         try {

@@ -30,6 +30,10 @@ public class Cover {
     private String isbn;
     private byte[] image;
 
+    public Cover(String isbn) {
+        this.isbn = isbn;
+    }
+
     public boolean hasValidData() {
         return image.length > IMAGE_SIZE_THRESHOLD;
     }
