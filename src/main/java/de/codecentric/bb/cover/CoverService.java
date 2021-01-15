@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class CoverService {
 
     private final CoverRepository repository;
-    private static final String OPEN_LIBRARY_COVER_URL_TEMPLATE = "http://covers.openlibrary.org/b/isbn/%s-M.jpg";
+    private static final String OPEN_LIBRARY_COVER_URL_TEMPLATE = "http://covers.openlibrary.org/b/isbn/%s-L.jpg";
 
     @Autowired
     public CoverService(CoverRepository repository) {
