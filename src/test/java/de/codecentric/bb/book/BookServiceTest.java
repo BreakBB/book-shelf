@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 
 import de.codecentric.bb.cover.Cover;
 import de.codecentric.bb.cover.CoverService;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
@@ -31,7 +32,7 @@ class BookServiceTest {
 
     private final String ISBN = "isbn";
 
-    Book testBook = new Book(10L, ISBN, "title", "author", LocalDateTime.now(), null);
+    Book testBook = new Book(10L, ISBN, "title", "author", LocalDate.now(), null);
 
     @Test
     void getAllBooks() {

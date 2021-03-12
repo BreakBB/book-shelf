@@ -1,7 +1,7 @@
 package de.codecentric.bb.book;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,7 +10,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 
 @Getter
 @Setter
@@ -26,8 +25,8 @@ public class Book {
     private String isbn;
     private String title;
     private String author;
-    @JsonFormat(pattern = "dd-MM-yyyy")
-    private LocalDateTime releaseDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate releaseDate;
 
     private Long coverId;
 }
