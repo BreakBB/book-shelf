@@ -40,13 +40,13 @@ public class BookController extends BookExceptionController {
 
     @GetMapping("/{isbn}")
     public Book getBookByIsbn(@PathVariable String isbn) {
-        log.info("Finding book with isbn: {}", isbn);
+        log.info("Trying to find book with isbn: {}", isbn);
         return bookService.findByIsbn(isbn);
     }
 
     @GetMapping(value = "/{isbn}/cover", produces = MediaType.IMAGE_PNG_VALUE)
     public byte[] getCoverByIsbn(@PathVariable String isbn) {
-        log.info("Finding cover for book with isbn: {}", isbn);
+        log.info("Trying to find cover for book with isbn: {}", isbn);
         return coverService.getCoverByIsbn(isbn).getImage();
     }
 
