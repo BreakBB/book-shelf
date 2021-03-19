@@ -23,9 +23,12 @@ public class CoverService {
     public Cover getCoverByIsbn(String isbn) {
         Cover cover = repository.findCoverByIsbn(isbn);
 
-        if (cover == null) {
-            cover = fetchCoverFromOpenLibrary(isbn);
+        if (cover != null) {
+            log.info("Found cover in database for '{}'", isbn);
+            return cover;
         }
+
+        cover = fetchCoverFromOpenLibrary(isbn);
 
         if (!cover.hasValidData()) {
             log.info("Could not find valid cover for '{}'. Found cover with {} bytes is too small", isbn, cover.getImageSize());
