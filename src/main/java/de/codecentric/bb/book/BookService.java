@@ -47,4 +47,11 @@ public class BookService {
         log.info("Deleted {} books with isbn '{}'", deletedBookAmount, isbn);
         return deletedBookAmount;
     }
+
+    public Book updateBook(String isbn, Book updatedBook) {
+        Book currentBook = bookRepository.findBookByIsbn(isbn);
+        currentBook.updateData(updatedBook);
+        bookRepository.save(currentBook);
+        return currentBook;
+    }
 }

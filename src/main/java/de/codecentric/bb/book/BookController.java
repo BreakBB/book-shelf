@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -59,5 +60,11 @@ public class BookController extends BookExceptionController {
     public long deleteBookByIsbn(@PathVariable String isbn) {
         log.info("Deleting book with isbn: {}", isbn);
         return bookService.deleteByIsbn(isbn);
+    }
+
+    @PutMapping("/{isbn}")
+    public Book updateBook(@PathVariable String isbn, @RequestBody Book updatedBook) {
+        log.info("Updating book with isbn: {}", isbn);
+        return bookService.updateBook(isbn, updatedBook);
     }
 }

@@ -29,4 +29,11 @@ public class Book {
     private LocalDate releaseDate;
 
     private Long coverId;
+
+    public void updateData(Book updatedBook) {
+        this.isbn = updatedBook.isbn;
+        this.title = updatedBook.title;
+        this.author = updatedBook.author;
+        this.releaseDate = updatedBook.releaseDate;
+    }
 }
