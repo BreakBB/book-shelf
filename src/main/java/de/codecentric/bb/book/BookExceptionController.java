@@ -18,6 +18,14 @@ public abstract class BookExceptionController {
         return ex.getMessage();
     }
 
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(BookAlreadyExists.class)
+    @ResponseBody
+    public String handleBookAlreadyExistsException(BookAlreadyExists ex) {
+        log.info(ex.getMessage());
+        return ex.getMessage();
+    }
+
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ExceptionHandler(CoverNotFoundException.class)
     @ResponseBody

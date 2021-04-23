@@ -34,6 +34,10 @@ public class BookService {
     }
 
     public Book addBook(Book newBook) {
+        if (bookRepository.findBookByIsbn(newBook.getIsbn()) != null) {
+            throw new BookAlreadyExists(newBook.getIsbn());
+        }
+
         Cover cover = coverService.getCoverByIsbn(newBook.getIsbn());
         if (cover != null) {
             newBook.setCoverId(cover.getId());
