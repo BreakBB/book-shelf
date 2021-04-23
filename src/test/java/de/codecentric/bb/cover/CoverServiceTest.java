@@ -34,7 +34,6 @@ class CoverServiceTest {
     void shouldFindExistingCoverByIsbn() {
         Cover testCover = new Cover(10L, VALID_ISBN, VALID_IMAGE);
         when(repository.findCoverByIsbn(VALID_ISBN)).thenReturn(testCover);
-        when(repository.save(testCover)).thenReturn(testCover);
 
         Cover coverResult = coverService.getCoverByIsbn(VALID_ISBN);
 
@@ -50,8 +49,7 @@ class CoverServiceTest {
 
     @Test
     void shouldReturnNullForIsbnWithoutCover() {
-        Cover testCover = new Cover(10L, INVALID_ISBN, INVALID_IMAGE);
-        when(repository.findCoverByIsbn(INVALID_ISBN)).thenReturn(testCover);
+        when(repository.findCoverByIsbn(INVALID_ISBN)).thenReturn(null);
 
         Cover cover = coverService.getCoverByIsbn(INVALID_ISBN);
 
