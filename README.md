@@ -1,6 +1,8 @@
 # Book Shelf
 
-A simple Spring playground project.
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/BreakBB/book-shelf/Java%20CI%20with%20Maven)
+
+A simple Spring playground project. You can find the frontend counter part here: [Book Shelf UI](https://github.com/BreakBB/book-shelf-ui).
 
 ## Setup
 
