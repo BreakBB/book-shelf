@@ -38,22 +38,22 @@ public class BookController extends BookExceptionController {
         return books;
     }
 
+    @PostMapping
+    public Book addNewBook(@RequestBody Book newBook) {
+        log.info("Adding new book: {}", newBook);
+        return bookService.addBook(newBook);
+    }
+
     @GetMapping("/{isbn}")
     public Book getBookByIsbn(@PathVariable String isbn) {
         log.info("Trying to find book with isbn: {}", isbn);
         return bookService.findByIsbn(isbn);
     }
 
-    @GetMapping(value = "/{isbn}/cover", produces = MediaType.IMAGE_PNG_VALUE)
-    public byte[] getCoverByIsbn(@PathVariable String isbn) {
-        log.info("Trying to find cover for book with isbn: {}", isbn);
-        return coverService.getCoverByIsbn(isbn).getImage();
-    }
-
-    @PostMapping
-    public Book addNewBook(@RequestBody Book newBook) {
-        log.info("Adding new book: {}", newBook);
-        return bookService.addBook(newBook);
+    @PutMapping("/{isbn}")
+    public Book updateBook(@PathVariable String isbn, @RequestBody Book updatedBook) {
+        log.info("Updating book with isbn: {}", isbn);
+        return bookService.updateBook(isbn, updatedBook);
     }
 
     @DeleteMapping("/{isbn}")
@@ -62,9 +62,9 @@ public class BookController extends BookExceptionController {
         return bookService.deleteByIsbn(isbn);
     }
 
-    @PutMapping("/{isbn}")
-    public Book updateBook(@PathVariable String isbn, @RequestBody Book updatedBook) {
-        log.info("Updating book with isbn: {}", isbn);
-        return bookService.updateBook(isbn, updatedBook);
+    @GetMapping(value = "/{isbn}/cover", produces = MediaType.IMAGE_PNG_VALUE)
+    public byte[] getCoverByIsbn(@PathVariable String isbn) {
+        log.info("Trying to find cover for book with isbn: {}", isbn);
+        return coverService.getCoverByIsbn(isbn).getImage();
     }
 }

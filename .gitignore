@@ -1,2 +1,5 @@
 target/
 .idea/
+
+src/.DS_Store
+*.iml
