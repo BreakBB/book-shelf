@@ -24,7 +24,7 @@ public class Cover {
     private final int IMAGE_SIZE_THRESHOLD = 1000;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String isbn;

@@ -17,7 +17,8 @@ CREATE TABLE book (
     isbn            TEXT NOT NULL,
     title           TEXT,
     author          TEXT,
-    release_date    DATE
+    release_date    DATE,
+    cover_id        INTEGER
 );
 ```
 
