@@ -2,6 +2,7 @@ package de.codecentric.bb.book;
 
 import de.codecentric.bb.cover.CoverService;
 import java.util.List;
+import javax.annotation.security.RolesAllowed;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -28,6 +29,7 @@ public class BookController extends BookExceptionController {
         this.coverService = coverService;
     }
 
+    @RolesAllowed("user")
     @GetMapping
     public List<Book> getAllBooks() {
         log.info("Finding all books");
