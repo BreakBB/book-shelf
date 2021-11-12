@@ -18,7 +18,7 @@ public class LoginService {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    @Value("${keycloak-login-url}")
+    @Value("${login.url}")
     private String keycloakLoginUrl;
 
     public TokenResponse handleLoginRequest(String username, String password) {
@@ -26,7 +26,7 @@ public class LoginService {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-        map.add("client_id", "book-shelf");
+        map.add("client_id", "spring-book-shelf");
         map.add("grant_type", "password");
         map.add("username", username);
         map.add("password", password);
