@@ -19,8 +19,6 @@ public class LoginController {
 
     @PostMapping
     public TokenResponse login(@RequestBody LoginRequest loginRequest) {
-        log.info("Trying to login user: {}", loginRequest.getUsername());
-
         return loginService.handleLoginRequest(loginRequest.getUsername(), loginRequest.getPassword());
     }
 }

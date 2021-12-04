@@ -22,6 +22,7 @@ public class LoginService {
     private String keycloakLoginUrl;
 
     public TokenResponse handleLoginRequest(String username, String password) {
+        log.info("Trying to login user: {}", username);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
@@ -35,9 +36,11 @@ public class LoginService {
             restTemplate.postForEntity(keycloakLoginUrl, new HttpEntity<>(map, headers), TokenResponse.class);
 
         if (response.getStatusCode() != HttpStatus.OK) {
+            log.warn("Failed to login user {}", username);
             throw new RuntimeException("Unexpected response code: " + response.getStatusCode());
         }
 
+        log.info("Successfully logged in user {}", username);
         return response.getBody();
     }
 }
