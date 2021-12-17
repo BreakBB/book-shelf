@@ -1,6 +1,6 @@
 # Book Shelf
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/BreakBB/book-shelf/Java%20CI%20with%20Maven)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/BreakBB/book-shelf/Java%20CI%20with%20Maven) [![codecov](https://codecov.io/gh/BreakBB/book-shelf/branch/master/graph/badge.svg?token=K6SZEJ0T3G)](https://codecov.io/gh/BreakBB/book-shelf)
 
 A simple Spring playground project. You can find the frontend counter part here: [Book Shelf UI](https://github.com/BreakBB/book-shelf-ui).
 
