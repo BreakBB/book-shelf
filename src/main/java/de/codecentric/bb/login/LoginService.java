@@ -16,10 +16,13 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class LoginService {
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final String keycloakLoginUrl;
+    private final RestTemplate restTemplate;
 
-    @Value("${login.url}")
-    private String keycloakLoginUrl;
+    public LoginService(@Value("${login.url}") String keycloakLoginUrl, RestTemplate restTemplate) {
+        this.keycloakLoginUrl = keycloakLoginUrl;
+        this.restTemplate = restTemplate;
+    }
 
     public TokenResponse handleLoginRequest(String username, String password) {
         log.info("Trying to login user: {}", username);
