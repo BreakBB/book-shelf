@@ -3,31 +3,58 @@ version: '3.1'
 services:
   postgres:
     image: postgres:12
-    container_name: postgres-book-shelf
-    network_mode: bridge
+    container_name: spring-backend-postgres
     volumes:
       - postgres-data:/var/lib/postgresql/data
     restart: unless-stopped
     ports:
-      - 5432:5432
+      - "5444:5432"
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=fancyBook
-      - POSTGRES_DB=postgres
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: fancyBook
 
   spring-book-shelf:
     image: spring-book-shelf:latest
-    network_mode: bridge
-    container_name: spring-book-shelf
-    expose:
-      - 8080
+    container_name: spring-backend
     ports:
-      - 8080:8080
+      - "8090:8080"
     restart: unless-stopped
     depends_on:
       - postgres
-    links:
-      - postgres
+
+  keycloak-postgres:
+    image: postgres
+    container_name: keycloak-postgres
+    volumes:
+      - keycloak-postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: keycloak-postgres
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_SCHEMA: public
+      DB_PASSWORD: password
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the PostgreSQL JDBC driver documentation in order to use it.
+#      JDBC_PARAMS: "ssl=false"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - keycloak-postgres
 
 volumes:
   postgres-data:
+  keycloak-postgres-data:
+    driver: local
