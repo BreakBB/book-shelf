@@ -2,6 +2,7 @@ package de.codecentric.bb.book;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -41,6 +42,29 @@ class BookServiceTest {
 
         verify(repository).findAll();
         assertThat(allBooks.size(), is(1));
+    }
+
+    @Test
+    void deleteByIsbn() {
+        when(repository.deleteByIsbn(ISBN)).thenReturn(15L);
+
+        long deletedBooks = bookService.deleteByIsbn(ISBN);
+
+        assertThat(deletedBooks, is(15L));
+    }
+
+    @Test
+    void updateBook() {
+        when(repository.findBookByIsbn(ISBN)).thenReturn(testBook);
+        Book updatedBook = Book.builder().isbn(ISBN).author("def").build();
+
+        Book book = bookService.updateBook(ISBN, updatedBook);
+
+        verify(repository).save(testBook);
+        assertThat(book.getIsbn(), is(ISBN));
+        assertThat(book.getAuthor(), is("def"));
+        assertThat(book.getTitle(), is(nullValue()));
+        assertThat(book.getReleaseDate(), is(nullValue()));
     }
 
     @Nested
