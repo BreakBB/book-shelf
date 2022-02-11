@@ -46,4 +46,27 @@ public class LoginService {
         log.info("Successfully logged in user {}", username);
         return response.getBody();
     }
+
+    public TokenResponse handleRefreshTokenRequest(String refreshToken) {
+        log.info("Trying to retrieve new access token by refresh token");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("client_id", "spring-book-shelf");
+        map.add("grant_type", "refresh_token");
+        map.add("refresh_token", refreshToken);
+
+        ResponseEntity<TokenResponse> response =
+            restTemplate.postForEntity(keycloakLoginUrl, new HttpEntity<>(map, headers), TokenResponse.class);
+
+        if (response.getStatusCode() != HttpStatus.OK) {
+            log.warn("Failed to refresh access token");
+            throw new RuntimeException("Unexpected response code: " + response.getStatusCode());
+        }
+
+        log.info("Successfully refreshed access token");
+        return response.getBody();
+
+    }
 }

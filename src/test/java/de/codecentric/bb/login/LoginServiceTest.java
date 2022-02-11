@@ -17,7 +17,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
@@ -28,6 +27,7 @@ class LoginServiceTest {
 
     private static final String USERNAME = "someUsername";
     private static final String PASSWORD = "somePassword";
+    private static final String REFRESH_TOKEN = "someRefreshToken";
 
     @Mock
     private RestTemplate restTemplate;
@@ -73,6 +73,39 @@ class LoginServiceTest {
             when(restTemplate.postForEntity(eq("/test"), any(HttpEntity.class), eq(TokenResponse.class))).thenReturn(responseEntity);
 
             assertThrows(RuntimeException.class, () -> loginService.handleLoginRequest(USERNAME, PASSWORD));
+        }
+    }
+
+    @Nested
+    class HandleRefreshTokenRequest {
+        @Test
+        void shouldSuccessfullyRetrieveNewAccessToken() {
+            TokenResponse tokenResponse = TokenResponse.builder()
+                .accessToken("accessToken")
+                .refreshToken("refreshToken")
+                .build();
+            ResponseEntity<TokenResponse> responseEntity = ResponseEntity.ok(tokenResponse);
+            when(restTemplate.postForEntity(eq("/test"), captor.capture(), eq(TokenResponse.class))).thenReturn(responseEntity);
+
+            TokenResponse response = loginService.handleRefreshTokenRequest(REFRESH_TOKEN);
+
+            assertThat(response, is(tokenResponse));
+            HttpEntity<MultiValueMap<String, String>> httpEntity = captor.getValue();
+            assertThat(httpEntity.getHeaders().getContentType(), is(MediaType.APPLICATION_FORM_URLENCODED));
+
+            MultiValueMap<String, String> body = httpEntity.getBody();
+            assertThat(body, is(notNullValue()));
+            assertThat(body.get("client_id").get(0), is("spring-book-shelf"));
+            assertThat(body.get("grant_type").get(0), is("refresh_token"));
+            assertThat(body.get("refresh_token").get(0), is(REFRESH_TOKEN));
+        }
+
+        @Test
+        void shouldThrowRuntimeExceptionOnFailedRequest() {
+            ResponseEntity<TokenResponse> responseEntity = ResponseEntity.badRequest().body(TokenResponse.builder().build());
+            when(restTemplate.postForEntity(eq("/test"), any(HttpEntity.class), eq(TokenResponse.class))).thenReturn(responseEntity);
+
+            assertThrows(RuntimeException.class, () -> loginService.handleRefreshTokenRequest(REFRESH_TOKEN));
         }
     }
 }
