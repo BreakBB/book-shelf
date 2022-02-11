@@ -23,6 +23,11 @@ public class LoginController {
         return loginService.handleLoginRequest(loginRequest.getUsername(), loginRequest.getPassword());
     }
 
+    @PostMapping("/refresh")
+    public TokenResponse refreshAccessToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
+        return loginService.handleRefreshTokenRequest(refreshTokenRequest.getRefreshToken());
+    }
+
     @GetMapping("/checkToken")
     public boolean isValidAccessToken() {
         // This endpoint is required to return something useful, when trying to verify if the access_token is still valid.
