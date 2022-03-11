@@ -29,8 +29,7 @@ public class Book {
     private String author;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate releaseDate;
-
-    private Long coverId;
+    private boolean hasCover;
 
     public void updateData(Book updatedBook) {
         this.isbn = updatedBook.isbn;

@@ -32,7 +32,7 @@ class BookServiceTest {
 
     private final String ISBN = "isbn";
 
-    Book testBook = new Book(10L, ISBN, "title", "author", LocalDate.now(), null);
+    Book testBook = new Book(10L, ISBN, "title", "author", LocalDate.now(), false);
 
     @Test
     void getAllBooks() {
@@ -107,7 +107,7 @@ class BookServiceTest {
 
             Book bookResult = bookService.addBook(testBook);
 
-            assertThat(bookResult.getCoverId(), is(testCover.getId()));
+            assertThat(bookResult.isHasCover(), is(true));
         }
 
         @Test
