@@ -58,4 +58,10 @@ public class BookService {
         bookRepository.save(currentBook);
         return currentBook;
     }
+
+    public void setBookHasCover(String isbn) {
+        Book book = bookRepository.findBookByIsbn(isbn);
+        book.setHasCover(true);
+        bookRepository.save(book);
+    }
 }

@@ -4,12 +4,16 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -24,6 +28,9 @@ class CoverServiceTest {
     private CoverRepository repository;
 
     private CoverService coverService;
+
+    @Captor
+    private ArgumentCaptor<Cover> coverCaptor;
 
     @BeforeEach
     void setUp() {
@@ -54,5 +61,38 @@ class CoverServiceTest {
         Cover cover = coverService.getCoverByIsbn(INVALID_ISBN);
 
         assertThat(cover, is(nullValue()));
+    }
+
+    @Test
+    void shouldCreateCoverWhenNoneIsFound() throws IOException {
+        MockMultipartFile file = new MockMultipartFile("testImage.jpg", "some pixels".getBytes());
+
+        coverService.setCover(VALID_ISBN, file);
+
+        verify(repository).save(coverCaptor.capture());
+        Cover cover = coverCaptor.getValue();
+        assertThat(cover.getImage(), is(file.getBytes()));
+        assertThat(cover.getIsbn(), is(VALID_ISBN));
+    }
+
+    @Test
+    void shouldUpdateCoverImageWhenCoverAlreadyExists() throws IOException {
+        Cover testCover = Cover.builder().isbn(VALID_ISBN).image("some old cover".getBytes()).build();
+        when(repository.findCoverByIsbn(VALID_ISBN)).thenReturn(testCover);
+        MockMultipartFile file = new MockMultipartFile("testImage.jpg", "some pixels".getBytes());
+
+        coverService.setCover(VALID_ISBN, file);
+
+        verify(repository).save(coverCaptor.capture());
+        Cover cover = coverCaptor.getValue();
+        assertThat(cover.getImage(), is(file.getBytes()));
+        assertThat(cover.getIsbn(), is(VALID_ISBN));
+    }
+
+    @Test
+    void shouldThrowCoverUploadFailedExceptionForCorruptedImages() {
+        MockMultipartFile file = new MockMultipartFile("testImage.jpg", null);
+
+        assertThrows(CoverUploadFailedException.class, () -> coverService.setCover(VALID_ISBN, file));
     }
 }
