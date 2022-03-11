@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 @Slf4j
@@ -35,16 +36,21 @@ public class LoginService {
         map.add("username", username);
         map.add("password", password);
 
-        ResponseEntity<TokenResponse> response =
-            restTemplate.postForEntity(keycloakLoginUrl, new HttpEntity<>(map, headers), TokenResponse.class);
+        try {
+            ResponseEntity<TokenResponse> response =
+                restTemplate.postForEntity(keycloakLoginUrl, new HttpEntity<>(map, headers), TokenResponse.class);
 
-        if (response.getStatusCode() != HttpStatus.OK) {
-            log.warn("Failed to login user {}", username);
-            throw new RuntimeException("Unexpected response code: " + response.getStatusCode());
+            if (response.getStatusCode() != HttpStatus.OK) {
+                log.warn("Failed to login user {}", username);
+                throw new RuntimeException("Unexpected response code: " + response.getStatusCode());
+            }
+
+            log.info("Successfully logged in user {}", username);
+            return response.getBody();
+        } catch (HttpClientErrorException exception) {
+            log.warn("Failed to login user {}", username, exception);
+            throw new UnauthorizedException();
         }
-
-        log.info("Successfully logged in user {}", username);
-        return response.getBody();
     }
 
     public TokenResponse handleRefreshTokenRequest(String refreshToken) {
