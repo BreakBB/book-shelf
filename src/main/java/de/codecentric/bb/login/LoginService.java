@@ -63,12 +63,11 @@ public class LoginService {
         map.add("grant_type", "refresh_token");
         map.add("refresh_token", refreshToken);
 
-        ResponseEntity<TokenResponse> response =
-            restTemplate.postForEntity(keycloakLoginUrl, new HttpEntity<>(map, headers), TokenResponse.class);
-
-        if (response.getStatusCode() != HttpStatus.OK) {
-            log.warn("Failed to refresh access token");
-            throw new RuntimeException("Unexpected response code: " + response.getStatusCode());
+        ResponseEntity<TokenResponse> response;
+        try {
+            response = restTemplate.postForEntity(keycloakLoginUrl, new HttpEntity<>(map, headers), TokenResponse.class);
+        } catch (HttpClientErrorException exception) {
+            throw new InvalidRefreshTokenException();
         }
 
         log.info("Successfully refreshed access token");

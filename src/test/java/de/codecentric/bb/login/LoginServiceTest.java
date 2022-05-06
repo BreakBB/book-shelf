@@ -111,11 +111,11 @@ class LoginServiceTest {
         }
 
         @Test
-        void shouldThrowRuntimeExceptionOnFailedRequest() {
-            ResponseEntity<TokenResponse> responseEntity = ResponseEntity.badRequest().body(TokenResponse.builder().build());
-            when(restTemplate.postForEntity(eq("/test"), any(HttpEntity.class), eq(TokenResponse.class))).thenReturn(responseEntity);
+        void shouldThrowInvalidRefreshTokenExceptionOnFailedRequest() {
+            when(restTemplate.postForEntity(eq("/test"), any(HttpEntity.class), eq(TokenResponse.class))).thenThrow(
+                new HttpClientErrorException(HttpStatus.BAD_REQUEST));
 
-            assertThrows(RuntimeException.class, () -> loginService.handleRefreshTokenRequest(REFRESH_TOKEN));
+            assertThrows(InvalidRefreshTokenException.class, () -> loginService.handleRefreshTokenRequest(REFRESH_TOKEN));
         }
     }
 }
