@@ -32,7 +32,7 @@ class BookServiceTest {
 
     private final String ISBN = "isbn";
 
-    Book testBook = new Book(10L, ISBN, "title", "author", LocalDate.now(), null);
+    Book testBook = new Book(10L, ISBN, "title", "author", LocalDate.now(), false);
 
     @Test
     void getAllBooks() {
@@ -65,6 +65,17 @@ class BookServiceTest {
         assertThat(book.getAuthor(), is("def"));
         assertThat(book.getTitle(), is(nullValue()));
         assertThat(book.getReleaseDate(), is(nullValue()));
+    }
+
+    @Test
+    void setBookHasCover() {
+        testBook.setHasCover(false);
+        when(repository.findBookByIsbn(ISBN)).thenReturn(testBook);
+
+        bookService.setBookHasCover(ISBN);
+
+        verify(repository).save(testBook);
+        assertThat(testBook.isHasCover(), is(true));
     }
 
     @Nested
@@ -107,7 +118,7 @@ class BookServiceTest {
 
             Book bookResult = bookService.addBook(testBook);
 
-            assertThat(bookResult.getCoverId(), is(testCover.getId()));
+            assertThat(bookResult.isHasCover(), is(true));
         }
 
         @Test

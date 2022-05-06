@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service
@@ -55,5 +56,19 @@ public class CoverService {
 
     private BufferedImage fetchCoverFromUrl(String coverUrl) throws IOException {
         return ImageIO.read(new URL(coverUrl));
+    }
+
+    public void setCover(String isbn, MultipartFile file) {
+        Cover cover = repository.findCoverByIsbn(isbn);
+        if (cover == null) {
+            cover = Cover.builder().isbn(isbn).build();
+        }
+
+        try {
+            cover.setImage(file.getBytes());
+            repository.save(cover);
+        } catch (IOException e) {
+            throw new CoverUploadFailedException(isbn);
+        }
     }
 }

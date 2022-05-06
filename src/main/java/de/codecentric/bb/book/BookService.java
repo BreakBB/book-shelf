@@ -40,7 +40,7 @@ public class BookService {
 
         Cover cover = coverService.getCoverByIsbn(newBook.getIsbn());
         if (cover != null) {
-            newBook.setCoverId(cover.getId());
+            newBook.setHasCover(cover.getId() != null);
         }
 
         return bookRepository.save(newBook);
@@ -57,5 +57,11 @@ public class BookService {
         currentBook.updateData(updatedBook);
         bookRepository.save(currentBook);
         return currentBook;
+    }
+
+    public void setBookHasCover(String isbn) {
+        Book book = bookRepository.findBookByIsbn(isbn);
+        book.setHasCover(true);
+        bookRepository.save(book);
     }
 }

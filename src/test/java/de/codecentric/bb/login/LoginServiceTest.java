@@ -1,14 +1,13 @@
 package de.codecentric.bb.login;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThrows;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-import org.springframework.http.HttpEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -17,9 +16,12 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 @ExtendWith(MockitoExtension.class)
@@ -73,6 +75,14 @@ class LoginServiceTest {
             when(restTemplate.postForEntity(eq("/test"), any(HttpEntity.class), eq(TokenResponse.class))).thenReturn(responseEntity);
 
             assertThrows(RuntimeException.class, () -> loginService.handleLoginRequest(USERNAME, PASSWORD));
+        }
+
+        @Test
+        void shouldThrowUnauthorizedExceptionOnHttpClientErrorExceptionByRestTemplate() {
+            when(restTemplate.postForEntity(eq("/test"), any(HttpEntity.class), eq(TokenResponse.class))).thenThrow(
+                new HttpClientErrorException(HttpStatus.UNAUTHORIZED));
+
+            assertThrows(UnauthorizedException.class, () -> loginService.handleLoginRequest(USERNAME, PASSWORD));
         }
     }
 

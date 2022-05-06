@@ -10,12 +10,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -40,6 +42,10 @@ public class Cover {
 
     public int getImageSize() {
         return image.length;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     public void setImage(BufferedImage image) throws IOException {
