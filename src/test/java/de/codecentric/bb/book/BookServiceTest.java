@@ -67,6 +67,17 @@ class BookServiceTest {
         assertThat(book.getReleaseDate(), is(nullValue()));
     }
 
+    @Test
+    void setBookHasCover() {
+        testBook.setHasCover(false);
+        when(repository.findBookByIsbn(ISBN)).thenReturn(testBook);
+
+        bookService.setBookHasCover(ISBN);
+
+        verify(repository).save(testBook);
+        assertThat(testBook.isHasCover(), is(true));
+    }
+
     @Nested
     class FindByIsbn {
         @Test
